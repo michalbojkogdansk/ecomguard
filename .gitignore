@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+env/
+venv/
+.env
+*.egg-info/
+dist/
+build/
+
+# Jupyter / Databricks
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data files (never commit real or generated data)
+data/
+*.csv
+*.parquet
+*.json.gz
+
+# Secrets
+*.pem
+*.key
+secrets/
+.secrets
+config/local.yml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
