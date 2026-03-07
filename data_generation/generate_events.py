@@ -1,6 +1,6 @@
 """
 EcomGuard - Synthetic Event Generator
-======================================
+=====================================
 Generates realistic e-commerce events for:
   - Customer registrations (contains PII -> GDPR scope)
   - Login attempts (includes suspicious patterns -> MTTD scope)
@@ -41,12 +41,12 @@ SUSPICIOUS_USER_IDS = [f"user_{i}" for i in random.sample(range(1, NUM_CUSTOMERS
 PRODUCT_CATALOG = [
     {"product_id": "P001", "name": "Wireless Headphones", "price": 79.99, "category": "Electronics"},
     {"product_id": "P002", "name": "Running Shoes",       "price": 59.99, "category": "Sports"},
-    {"product_id": "P003", "name": "Coffee Maker",        "price": 49.99, "category": "Kitchen"},
-    {"product_id": "P004", "name": "Yoga Mat",            "price": 24.99, "category": "Sports"},
-    {"product_id": "P005", "name": "Laptop Stand",        "price": 34.99, "category": "Electronics"},
+    {"product_id": "P004", "name": "Yoga Mat",           "price": 24.99, "category": "Sports"},
+    {"product_id": "P005", "name": "Laptop Stand",       "price": 34.99, "category": "Electronics"},
     {"product_id": "P006", "name": "Water Bottle",        "price": 14.99, "category": "Sports"},
     {"product_id": "P007", "name": "Desk Lamp",           "price": 29.99, "category": "Home"},
     {"product_id": "P008", "name": "Protein Powder",      "price": 44.99, "category": "Health"},
+    {"product_id": "P009", "name": "Coffee Maker",        "price": 49.99, "category": "Kitchen"},
 ]
 
 def random_timestamp(days_back=90):
@@ -56,14 +56,14 @@ def random_timestamp(days_back=90):
         minutes=random.randint(0, 59),
         seconds=random.randint(0, 59),
     )
-    return (datetime.now(timezone.utc) - delta).isoformat() + "Z"
+    return (datetime.now(timezone.utc) - delta).isoformat()
 
 def write_jsonl(filename, records):
     path = os.path.join(OUTPUT_DIR, filename)
     with open(path, "w") as f:
         for record in records:
             f.write(json.dumps(record) + "\n")
-    print(f"  {len(records):?5} records -> {path}")
+    print(f"  {len(records):5} records -> {path}")
 
 def generate_customers(n):
     customers = []
@@ -178,7 +178,7 @@ def generate_support_tickets(customers, n):
         status      = random.choice(statuses)
         resolved_at = None
         if status in ["resolved", "closed"]:
-            resolved_at = (created_at + timedelta(hours=random.randint(1, 72))).isoformat() + "Z"
+            resolved_at = (created_at + timedelta(hours=random.randint(1, 72))).isoformat()
         tickets.append({
             "ticket_id":   fake.uuid4(),
             "event_type":  "support_ticket",
@@ -186,7 +186,7 @@ def generate_support_tickets(customers, n):
             "category":    random.choice(categories),
             "status":      status,
             "priority":    random.choice(["low", "medium", "high", "critical"]),
-            "created_at":  created_at.isoformat() + "Z",
+            "created_at":  created_at.isoformat(),
             "resolved_at": resolved_at,
             "subject":     fake.sentence(nb_words=6),
         })
