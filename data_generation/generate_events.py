@@ -20,7 +20,7 @@ Output:
 import json
 import random
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from faker import Faker
 
 fake = Faker("en_GB")  # UK locale for realistic European e-commerce / GDPR context
@@ -56,14 +56,14 @@ def random_timestamp(days_back=90):
         minutes=random.randint(0, 59),
         seconds=random.randint(0, 59),
     )
-    return (datetime.utcnow() - delta).isoformat() + "Z"
+    return (datetime.now(timezone.utc) - delta).isoformat() + "Z"
 
 def write_jsonl(filename, records):
     path = os.path.join(OUTPUT_DIR, filename)
     with open(path, "w") as f:
         for record in records:
             f.write(json.dumps(record) + "\n")
-    print(f"  {len(records):>5} records -> {path}")
+    print(f"  {len(records):?5} records -> {path}")
 
 def generate_customers(n):
     customers = []
@@ -174,7 +174,7 @@ def generate_support_tickets(customers, n):
     tickets = []
     user_ids = [c["user_id"] for c in customers]
     for _ in range(n):
-        created_at  = datetime.utcnow() - timedelta(days=random.randint(0, 60))
+        created_at  = datetime.now(timezone.utc) - timedelta(days=random.randint(0, 60))
         status      = random.choice(statuses)
         resolved_at = None
         if status in ["resolved", "closed"]:
