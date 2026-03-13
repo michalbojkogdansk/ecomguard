@@ -28,26 +28,26 @@ EcomGuard simulates a fictional e-commerce company and provides a full data plat
 │   ┌──────────────────┐    ┌──────────────────┐             │
 │   │  order-service   │    │   auth-service   │             │
 │   │  (Python/Flask)  │    │  (Python/Flask)  │             │
-│   └────────┬─────────┘    └────────┬─────────┘             │
+│   └────────┬────────┘    └────────┬─────────┘             │
 │            │                       │                         │
-└────────────┼───────────────────────┼─────────────────────────┘
+└────────────┼──────────────────────┼─────────────────────────┘
              │                       │
              ▼                       ▼
 ┌─────────────────────────────────────────────────────────────┐
 │              Apache Kafka (Confluent Cloud)                  │
-│                                                             │
+│                                                                │
 │   [orders topic]    [login-events topic]   [clicks topic]   │
 └─────────────────────────────┬───────────────────────────────┘
                               │
-                              ▼
-┌─────────────────────────────────────────────────────────────┐
-│              Databricks (Azure) — Structured Streaming       │
-│                                                             │
+                                ▼
+┌──────────────────────────────────────────────────────────────┐
+│              Databricks (Azure) — Structured Streaming        │
+│                                                                │
 │   ┌──────────────┐  ┌──────────────┐  ┌─────────────────┐  │
 │   │ GDPR Layer   │  │  Detection   │  │  Incident Track  │  │
 │   │ PII Masking  │  │ Anomaly/MTTD │  │     MTTR        │  │
-│   └──────────────┘  └──────────────┘  └─────────────────┘  │
-│                                                             │
+│   └─────────────┘  └──────────────┘  └─────────────────┘  │
+│                                                                │
 │              Delta Lake (Azure Data Lake Gen2)              │
 └─────────────────────────────────────────────────────────────┘
                               │
@@ -98,7 +98,7 @@ ecomguard/
 
 | Phase | Focus | Status |
 |---|---|---|
-| **1** | Synthetic data generation + Databricks basics | 🔄 In Progress |
+| **1** | Synthetic data generation + Azure Data Lake setup | ✅ Complete |
 | **2** | GDPR layer + Detection (MTTD) + Incidents (MTTR) | ⏳ Planned |
 | **3** | Observability + Secure web dashboard + Kafka streaming | ⏳ Planned |
 | **4** | Kubernetes microservices (minikube → AKS) + IaC | ⏳ Planned |
@@ -139,3 +139,25 @@ This project intentionally connects knowledge from:
 ---
 
 *Built as a portfolio and learning project. All data is synthetic — generated using Python Faker.*
+
+---
+
+## ✅ Phase 1 Progress
+
+### Data Generation
+- 10,700 synthetic events generated across 5 event types
+- 23 suspicious login events seeded for MTTD testing
+
+| File | Records |
+|---|---|
+| `customers.jsonl` | 500 |
+| `orders.jsonl` | 2,000 |
+| `clickstream.jsonl` | 5,000 |
+| `login_events.jsonl` | 3,000 |
+| `support_tickets.jsonl` | 200 |
+
+### Azure Data Lake Storage Gen2
+Raw files uploaded to `ecomguard-raw` container on ADLS Gen2:
+
+![ADLS Gen2 ecomguard-raw container showing 5 folders](docs/screenshots/adls_container.png)
+
